@@ -1,0 +1,24 @@
+:root {
+  --ansi-0: #16161d;
+  --ansi-1: #fc4777;
+  --ansi-2: #00d793;
+  --ansi-3: #ffb38f;
+  --ansi-4: #00bedd;
+  --ansi-5: #ff58b1;
+  --ansi-6: #00e7e5;
+  --ansi-7: #ffefec;
+  --ansi-8: #1a1c24;
+  --ansi-9: #fe5f87;
+  --ansi-10: #00dea0;
+  --ansi-11: #ffc0a2;
+  --ansi-12: #00c9e2;
+  --ansi-13: #ff6cba;
+  --ansi-14: #07e9e8;
+  --ansi-15: #fff2ef;
+  --background: #fdf0ed;
+  --foreground: #16161d;
+  --cursor: #f9cec3;
+  --cursor-text: #f9cec3;
+  --selection-background: #f9cec3;
+  --selection-foreground: #16161d;
+}

@@ -1,0 +1,291 @@
+@font-face {
+  font-family: "JetBrainsMono Nerd Font";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("https://cdn.jsdelivr.net/gh/ryanoasis/nerd-fonts@v3.2.1/patched-fonts/JetBrainsMono/Ligatures/Regular/JetBrainsMonoNerdFont-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "JetBrainsMono Nerd Font";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("https://cdn.jsdelivr.net/gh/ryanoasis/nerd-fonts@v3.2.1/patched-fonts/JetBrainsMono/Ligatures/Bold/JetBrainsMonoNerdFont-Bold.ttf") format("truetype");
+}
+
+:root {
+  --background: #060807;
+  --foreground: #cfe8d8;
+  --ansi-0: #0b0f0d;
+  --ansi-2: #3dfc87;
+  --ansi-7: #7a8f83;
+  --ansi-8: #4a5a52;
+  --ansi-10: #1a6b3b;
+  --ansi-15: #e9fff1;
+  --selection-background: #14201a;
+}
+
+:root {
+  --bg: var(--background);
+  --bg-soft: color-mix(in srgb, var(--background) 92%, black);
+  --line: var(--selection-background);
+  --dim: var(--ansi-8);
+  --fg: var(--foreground);
+  --fg-bright: var(--ansi-15);
+  --muted: var(--ansi-7);
+  --ok: var(--ansi-2);
+  --ok-dim: var(--ansi-10);
+}
+
+
+*:focus,
+*:focus-visible {
+  outline: none !important;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--fg);
+  height: 100%;
+  font-family: "JetBrainsMono Nerd Font", ui-monospace, monospace;
+}
+
+#__next, main {
+  height: 100%;
+}
+
+.app {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 28px 24px 60px;
+  height: 100vh;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.titlebar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid var(--line);
+  padding: 10px 14px;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  background: var(--bg-soft);
+}
+.titlebar .dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--ok);
+  display: inline-block;
+  margin-right: 8px;
+  box-shadow: 0 0 8px var(--ok);
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+.titlebar .right {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+}
+.titlebar .right span b {
+  color: var(--fg);
+  font-weight: 500;
+}
+
+.terminal-stack {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.terminal-scrollback {
+  flex: 1;
+  min-height: 0;
+}
+
+.terminal-divider {
+  height: 2px;
+  background: var(--line);
+  margin: 14px 0;
+}
+
+.terminal-input {
+  height: 22px;
+  flex-shrink: 0;
+}
+
+.powerline {
+  display: flex;
+  font-size: 15px;
+  line-height: 24px;
+  margin-top: -4px;
+  margin-bottom: 4px;
+  flex-shrink: 0;
+  height: 24px;
+}
+.powerline-side {
+  display: flex;
+}
+.powerline-spacer {
+  flex: 1;
+}
+.terminal-stack > .terminal-input {
+  margin-bottom: -8px;
+}
+.powerline-row {
+  display: inline-flex;
+  height: 24px;
+}
+.powerline-text {
+  padding: 0 10px;
+  height: 24px;
+  display: inline-block;
+}
+.powerline-arrow {
+  width: 9px;
+  height: 24px;
+  position: relative;
+  margin-right: -1px;
+}
+.powerline-arrow::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: currentColor;
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+}
+.dialog {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 320px;
+  border: 1px solid var(--line);
+  background: var(--bg);
+  color: var(--fg);
+  z-index: 200;
+  font-size: 13px;
+  font-family: "JetBrainsMono Nerd Font", ui-monospace, monospace;
+  box-shadow: 0 8px 32px color-mix(in srgb, var(--background) 60%, transparent);
+}
+.dialog-header {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--line);
+  color: var(--muted);
+  letter-spacing: 0.12em;
+  font-size: 11px;
+  text-transform: uppercase;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.dialog-header b {
+  color: var(--ok);
+  margin-right: 4px;
+}
+.dialog-close {
+  cursor: pointer;
+  color: var(--dim);
+}
+.dialog-close:hover {
+  color: var(--ok);
+}
+.dialog-body {
+  padding: 14px;
+  min-height: 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.config-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.config-label {
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.config-select {
+  font: inherit;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  color: var(--fg);
+  padding: 6px 8px;
+  cursor: pointer;
+}
+.config-select:focus {
+  border-color: var(--ok);
+}
+
+.dialog-themes {
+  width: 380px;
+  max-height: 70vh;
+  display: flex;
+  flex-direction: column;
+}
+.themes-body {
+  padding: 8px 0;
+  overflow-y: auto;
+}
+.themes-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 14px;
+}
+.themes-row:hover,
+.themes-row.is-active {
+  background: var(--line);
+}
+.themes-row.is-active .themes-name {
+  color: var(--ok);
+}
+.themes-name {
+  cursor: pointer;
+  flex: 1;
+  user-select: none;
+}
+
+.powerline-arrow-left {
+  margin-right: 0;
+  margin-left: -1px;
+}
+.powerline-arrow-left::before {
+  clip-path: polygon(100% 0, 0 50%, 100% 100%);
+}
+
+.xterm-viewport {
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) var(--bg);
+}
+
+.xterm-viewport::-webkit-scrollbar {
+  width: 8px;
+}
+
+.xterm-viewport::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+
+.xterm-viewport::-webkit-scrollbar-thumb {
+  background: var(--line);
+  border-radius: 4px;
+}
+
+.xterm-viewport::-webkit-scrollbar-thumb:hover {
+  background: var(--ok-dim);
+}
