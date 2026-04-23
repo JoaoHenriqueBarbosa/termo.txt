@@ -23,6 +23,6 @@ export async function POST(request) {
   await setSessionCookie(token, expiresAt);
 
   return Response.json({
-    user: { id: user.id, name: user.name, age: user.age },
+    user: { id: user.id, name: user.name, age: user.age, theme: user.theme },
   });
 }

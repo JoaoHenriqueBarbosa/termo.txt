@@ -1,5 +1,6 @@
 import { ansi, paint } from "./colors";
 import { authClient } from "../lib/authClient";
+import { loadTheme, paletteToTheme } from "../lib/themes";
 
 const isYes = (v) => ["s", "sim", "y", "yes"].includes(v.toLowerCase());
 const isNo = (v) => ["n", "não", "nao", "no"].includes(v.toLowerCase());
@@ -58,6 +59,13 @@ export function buildOnboarding(state) {
           };
         }
         state.user = data.user;
+        if (data.user.theme) {
+          loadTheme(data.user.theme).then((palette) => {
+            window.dispatchEvent(
+              new CustomEvent("termo:theme", { detail: { name: data.user.theme, palette } }),
+            );
+          }).catch(() => {});
+        }
         return { ok: true };
       },
       next: () => "loginDone",

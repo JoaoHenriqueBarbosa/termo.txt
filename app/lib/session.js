@@ -36,7 +36,7 @@ export async function getCurrentUser() {
   if (!token) return null;
   const user = db.findSessionUser(token);
   if (!user) return null;
-  return { id: user.id, name: user.name, age: user.age };
+  return { id: user.id, name: user.name, age: user.age, theme: user.theme };
 }
 
 export async function destroyCurrentSession() {

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Dialog from "./Dialog";
-import { fetchThemeList, loadTheme, getStoredTheme } from "../lib/themes";
+import { fetchThemeList, loadTheme, getStoredTheme, saveThemeToAccount } from "../lib/themes";
 
 export default function Themes({ open, onClose }) {
   const bodyRef = useRef(null);
@@ -17,6 +17,7 @@ export default function Themes({ open, onClose }) {
   };
 
   const confirm = () => {
+    saveThemeToAccount(getStoredTheme());
     setCursor(-1);
     onClose();
   };

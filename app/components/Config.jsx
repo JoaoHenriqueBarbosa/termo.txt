@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Dialog from "./Dialog";
-import { fetchThemeList, loadTheme, getStoredTheme } from "../lib/themes";
+import { fetchThemeList, loadTheme, getStoredTheme, saveThemeToAccount } from "../lib/themes";
 
 export default function Config({ open, onClose }) {
   const [themes, setThemes] = useState([]);
@@ -17,6 +17,7 @@ export default function Config({ open, onClose }) {
     const name = e.target.value;
     setCurrent(name);
     const palette = await loadTheme(name);
+    saveThemeToAccount(name);
     window.dispatchEvent(
       new CustomEvent("termo:theme", { detail: { name, palette } }),
     );

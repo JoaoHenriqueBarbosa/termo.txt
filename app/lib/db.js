@@ -21,6 +21,11 @@ function apply(event) {
     case "session_deleted":
       state.sessions.delete(event.token);
       break;
+    case "user_updated": {
+      const user = state.users.get(event.name);
+      if (user) Object.assign(user, event.fields);
+      break;
+    }
   }
 }
 
@@ -88,6 +93,14 @@ export const db = {
       return null;
     }
     return this.findUserById(session.userId);
+  },
+
+  updateUser(name, fields) {
+    ensureLoaded();
+    const user = state.users.get(name);
+    if (!user) return null;
+    append({ type: "user_updated", name, fields });
+    return user;
   },
 
   deleteSession(token) {

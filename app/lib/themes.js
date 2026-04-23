@@ -1,5 +1,5 @@
 const LINK_ID = "termo-theme";
-const STORAGE_KEY = "termo:theme";
+const COOKIE_NAME = "theme";
 
 const KEYS = [
   "ansi-0", "ansi-1", "ansi-2", "ansi-3", "ansi-4", "ansi-5",
@@ -28,11 +28,24 @@ export function loadTheme(name) {
       link.rel = "stylesheet";
       document.head.appendChild(link);
     }
+    const url = themeUrl(name);
+    document.cookie = `${COOKIE_NAME}=${encodeURIComponent(name)}; path=/; max-age=31536000; samesite=lax`;
+    if (link.getAttribute("href") === url) {
+      resolve(readPalette());
+      return;
+    }
     link.onload = () => resolve(readPalette());
     link.onerror = reject;
-    link.href = themeUrl(name);
-    localStorage.setItem(STORAGE_KEY, name);
+    link.href = url;
   });
+}
+
+export function saveThemeToAccount(name) {
+  fetch("/api/theme", {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ theme: name }),
+  }).catch(() => {});
 }
 
 export function readPalette() {
@@ -44,9 +57,11 @@ export function readPalette() {
   return palette;
 }
 
-export const getStoredTheme = () =>
-  (typeof localStorage !== "undefined" && localStorage.getItem(STORAGE_KEY)) ||
-  DEFAULT_THEME;
+export function getStoredTheme() {
+  if (typeof document === "undefined") return DEFAULT_THEME;
+  const m = document.cookie.match(/(?:^|; )theme=([^;]*)/);
+  return m ? decodeURIComponent(m[1]) : DEFAULT_THEME;
+}
 
 export function paletteToTheme(p) {
   if (!p) return undefined;

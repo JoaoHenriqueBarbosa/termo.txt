@@ -1,5 +1,6 @@
 import { ansi, paint } from "./colors";
 import { authClient } from "../lib/authClient";
+import { loadTheme, DEFAULT_THEME } from "../lib/themes";
 
 const openDialog = (event) => {
   window.dispatchEvent(new CustomEvent(event, { detail: { open: true } }));
@@ -51,6 +52,11 @@ export const commands = {
       await authClient.logout();
       state.user = null;
       state.userName = "";
+      loadTheme(DEFAULT_THEME).then((palette) => {
+        window.dispatchEvent(
+          new CustomEvent("termo:theme", { detail: { name: DEFAULT_THEME, palette } }),
+        );
+      }).catch(() => {});
       return "logged out. reload to start over.";
     },
   },
