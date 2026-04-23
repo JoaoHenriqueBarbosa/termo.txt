@@ -337,17 +337,20 @@ html, body {
 .game-cell.empty {
   border-color: #3a3a3c;
 }
-.game-error {
-  color: #dc3545;
+.game-status {
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-size: 13px;
   letter-spacing: 0.04em;
 }
-.game-message {
-  color: var(--fg);
-  font-size: 14px;
-  text-align: center;
+.game-error {
+  color: #dc3545;
 }
-.game-hint {
-  color: var(--dim);
-  font-size: 11px;
+.game-win {
+  color: #538d4e;
+}
+.game-lose {
+  color: var(--muted);
 }

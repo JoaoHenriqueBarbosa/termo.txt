@@ -10,10 +10,10 @@ export const commands = {
     desc: "mostra os comandos disponíveis",
     echo: true,
     run: () => {
-      const pad = Math.max(...Object.keys(commands).map((k) => k.length)) + 2;
+      const pad = Math.max(...Object.keys(commands).map((k) => k.length)) + 3;
       return Object.entries(commands)
         .map(([name, cmd]) => {
-          const padded = name.padEnd(pad);
+          const padded = ("/" + name).padEnd(pad);
           return `  ${paint(ansi.green, padded)}${paint(ansi.dim, cmd.desc)}`;
         })
         .join("\r\n");
@@ -35,6 +35,10 @@ export const commands = {
   termo: {
     desc: "inicia o jogo do dia",
     game: "termo:game",
+  },
+  exit: {
+    desc: "sai do jogo",
+    exit: true,
   },
   clear: {
     desc: "limpa o terminal",

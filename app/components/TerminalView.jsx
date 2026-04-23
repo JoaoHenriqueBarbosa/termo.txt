@@ -31,13 +31,16 @@ export default function TerminalView({ initialUser }) {
     const onConfig = (e) => setConfigOpen(!!e.detail?.open);
     const onThemes = (e) => setThemesOpen(!!e.detail?.open);
     const onGame = () => setGameOpen(true);
+    const onExitGame = () => closeGame();
     window.addEventListener("termo:config", onConfig);
     window.addEventListener("termo:themes", onThemes);
     window.addEventListener("termo:game", onGame);
+    window.addEventListener("termo:exit-game", onExitGame);
     return () => {
       window.removeEventListener("termo:config", onConfig);
       window.removeEventListener("termo:themes", onThemes);
       window.removeEventListener("termo:game", onGame);
+      window.removeEventListener("termo:exit-game", onExitGame);
     };
   }, []);
 
