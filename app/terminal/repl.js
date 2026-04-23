@@ -6,21 +6,37 @@ const PROMPT = "\u276f ";
 export function runRepl({ scrollback, inputController, state }) {
   const writePrompt = () => inputController.writePrompt(PROMPT);
   const echo = (line) => scrollback.writeln(paint(ansi.green, PROMPT) + line);
+  let gameMode = false;
+
+  const onGameOpen = () => {
+    gameMode = true;
+    inputController.writePrompt("");
+  };
+
+  const onGameClose = () => {
+    gameMode = false;
+    writePrompt();
+  };
+
+  window.addEventListener("termo:game", onGameOpen);
+  window.addEventListener("termo:game-close", onGameClose);
 
   const onCommand = async (line) => {
+    if (gameMode) {
+      window.dispatchEvent(
+        new CustomEvent("termo:guess", { detail: { word: line } }),
+      );
+      inputController.writePrompt("");
+      return;
+    }
+
     const trimmed = line.trim();
     if (!trimmed) {
       writePrompt();
       return;
     }
 
-    const [name, ...rest] = trimmed.split(/\s+/);
-
-    if (name === "clear") {
-      scrollback.clear();
-      writePrompt();
-      return;
-    }
+    const [name] = trimmed.split(/\s+/);
 
     const cmd = commands[name];
     if (!cmd) {
@@ -30,11 +46,17 @@ export function runRepl({ scrollback, inputController, state }) {
       return;
     }
 
-    if (!cmd.dialog && cmd.echo !== false) echo(line);
+    if (cmd.builtin && name === "clear") {
+      scrollback.clear();
+      writePrompt();
+      return;
+    }
+
+    if (!cmd.dialog && !cmd.game && cmd.echo !== false) echo(line);
 
     const output = await execCommand(cmd, state);
     if (output != null) scrollback.writeln(output);
-    writePrompt();
+    if (!cmd.game) writePrompt();
   };
 
   inputController.setMode("repl");

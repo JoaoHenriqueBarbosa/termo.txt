@@ -6,6 +6,7 @@ import Titlebar from "./Titlebar";
 import Powerline from "./Powerline";
 import Config from "./Config";
 import Themes from "./Themes";
+import Game from "./Game";
 import { ansi, paint } from "../terminal/colors";
 import { createTerminals } from "../terminal/setup";
 import { createPacing } from "../terminal/pacing";
@@ -24,17 +25,27 @@ export default function TerminalView({ initialUser }) {
   const [userName, setUserName] = useState(initialUser?.name ?? "");
   const [configOpen, setConfigOpen] = useState(false);
   const [themesOpen, setThemesOpen] = useState(false);
+  const [gameOpen, setGameOpen] = useState(false);
 
   useEffect(() => {
     const onConfig = (e) => setConfigOpen(!!e.detail?.open);
     const onThemes = (e) => setThemesOpen(!!e.detail?.open);
+    const onGame = () => setGameOpen(true);
     window.addEventListener("termo:config", onConfig);
     window.addEventListener("termo:themes", onThemes);
+    window.addEventListener("termo:game", onGame);
     return () => {
       window.removeEventListener("termo:config", onConfig);
       window.removeEventListener("termo:themes", onThemes);
+      window.removeEventListener("termo:game", onGame);
     };
   }, []);
+
+  const closeGame = () => {
+    setGameOpen(false);
+    window.dispatchEvent(new CustomEvent("termo:game-close"));
+    window.dispatchEvent(new CustomEvent("termo:refocus"));
+  };
 
   useEffect(() => {
     let teardown = () => {};
@@ -144,7 +155,12 @@ export default function TerminalView({ initialUser }) {
     <main className="app">
       <Titlebar />
       <div className="terminal-stack">
-        <div ref={scrollbackRef} className="terminal-scrollback" />
+        <div
+          ref={scrollbackRef}
+          className="terminal-scrollback"
+          style={{ display: gameOpen ? "none" : undefined }}
+        />
+        {gameOpen && <Game open={gameOpen} onClose={closeGame} />}
         <div className="terminal-divider" />
         <Powerline user={userName} />
         <div ref={inputRef} className="terminal-input" />
